@@ -19,11 +19,90 @@
             <p>Descubra como suas atividades diárias impactam o meio ambiente. A calculadora de pegada de carbono
                 permite medir suas emissões de gases de efeito estufa e tomar medidas para reduzi-las, contribuindo para
                 um futuro mais sustentável.</p>
-            <button>CALCULAR MINHAS EMISSÕES
-            </button>
+            <a href="#carbonFootprintForm">CALCULAR MINHAS EMISSÕES</a>
         </div>
     </div>
+    <section>
+        <h1>Calculadora de Pegada de Carbono</h1>
 
+        <form id="carbonFootprintForm">
+            <label for="usabilidade">Consumo de Eletricidade (kWh/ano):</label>
+            <input type="number" id="usabilidade" name="usabilidade" placeholder="Ex: 5000" required><br><br>
+
+            <label for="quilometragem">Quilometragem Anual do Carro (km):</label>
+            <input type="number" id="quilometragem" name="quilometragem" placeholder="Ex: 15000" required><br><br>
+
+            <label for="combustivel">Eficiência de Combustível do Carro (km/litro):</label>
+            <input type="number" id="combustivel" name="combustivel" placeholder="Ex: 12" required><br><br>
+
+            <label for="combustivel">Qual sua cidade?:</label>
+            <input type="text" id="cidade" name="cidade" required placeholder="Embu"><br><br>
+            <button type="button" onclick="calculateCarbonFootprint()">Calcular</button>
+        </form>
+
+        <div id="result"></div>
+        <p id="indicao"></p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </section>
+    <script>
+        async function calculateCarbonFootprint() {
+            var usabilidade = parseFloat(document.getElementById("usabilidade").value);
+            var quilometragem = parseFloat(document.getElementById("quilometragem").value);
+            var combustivel = parseFloat(document.getElementById("combustivel").value);
+            var cidade = document.getElementById("cidade").value;
+            var indicacao = document.getElementById("indicao");
+
+            // Fatores de emissão em kg CO2 por unidade
+            var electricityEmissionFactor = 0.5; // Exemplo: 0.5 kg CO2/kWh
+            var petrolEmissionFactor = 2.3; // Exemplo: 2.3 kg CO2/litro
+
+            // Cálculo das emissões
+            var electricityEmissions = usabilidade * electricityEmissionFactor;
+            var petrolConsumption = quilometragem / combustivel;
+            var petrolEmissions = petrolConsumption * petrolEmissionFactor;
+
+            // Total de emissões
+            var totalEmissions = electricityEmissions + petrolEmissions;
+
+            // Obter dados meteorológicos locais
+            var weatherApiKey = '8cd5a8c23d39c734fa2bfab6beaddc33'; // Substitua pelo seu próprio API Key
+            var city = cidade; // Substitua pela sua cidade
+
+            var weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${weatherApiKey}`);
+            var weatherData = await weatherResponse.json();
+
+            var temperature = weatherData.main.temp - 273.15; // Converter para Celsius
+
+            // Exibição do resultado
+            var resultElement = document.getElementById("result");
+            var temperaturaTotal = temperature.toFixed(1)
+            if (temperaturaTotal < 10) {
+                indicacao.innerHTML = "A temperatura atual é baixa. Isso pode resultar em um aumento no uso de aquecedores, o que pode elevar o consumo de energia e, consequentemente, a pegada de carbono.";
+            } else if (temperaturaTotal >= 10 && temperaturaTotal < 20) {
+                indicacao.innerHTML = "A temperatura atual é moderada. Nesse nível, o impacto no cálculo da pegada de carbono pode ser considerado médio, mas ainda é importante monitorar e otimizar o consumo de energia.";
+            } else if (temperaturaTotal >= 20 && temperaturaTotal < 30) {
+                indicacao.innerHTML = "A temperatura atual é alta. Isso pode levar a um aumento significativo no uso de sistemas de refrigeração, contribuindo para um aumento na pegada de carbono.";
+            } else {
+                indicacao.innerHTML = "A temperatura atual é altíssima. Nesse nível, é provável que haja uma demanda muito alta por sistemas de refrigeração, o que pode resultar em um aumento significativo na pegada de carbono. É importante considerar medidas de eficiência energética.";
+            }
+            resultElement.innerHTML = `
+                                                                    <h2>Sua Pegada de Carbono é de ${totalEmissions.toFixed(2)} kg CO2</h2>
+                                                                    <p>A temperatura atual em ${city} é de ${temperaturaTotal}°C.</p> 
+                                                                    
+                                                                    `;
+
+
+        }
+        </script>
 </body>
 
 </html>
