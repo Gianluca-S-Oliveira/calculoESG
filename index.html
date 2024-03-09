@@ -19,11 +19,15 @@
             <p>Descubra como suas atividades diárias impactam o meio ambiente. A calculadora de pegada de carbono
                 permite medir suas emissões de gases de efeito estufa e tomar medidas para reduzi-las, contribuindo para
                 um futuro mais sustentável.</p>
-            <a href="#carbonFootprintForm">CALCULAR MINHAS EMISSÕES</a>
+            <a href="#carbonFootprintForm"
+                style=" background-color: red;
+                                                padding: 10px; border-radius: 20px; text-decoration: none; color:white;  background-color: #45a049;;">CALCULAR
+                MINHAS
+                EMISSÕES</a>
         </div>
     </div>
     <section>
-        <h1>Calculadora de Pegada de Carbono</h1>
+        <h1 style="text-align: center;">Calculadora de Pegada de Carbono</h1>
 
         <form id="carbonFootprintForm">
             <label for="usabilidade">Consumo de Eletricidade (kWh/ano):</label>
@@ -95,14 +99,13 @@
                 indicacao.innerHTML = "A temperatura atual é altíssima. Nesse nível, é provável que haja uma demanda muito alta por sistemas de refrigeração, o que pode resultar em um aumento significativo na pegada de carbono. É importante considerar medidas de eficiência energética.";
             }
             resultElement.innerHTML = `
-                                                                    <h2>Sua Pegada de Carbono é de ${totalEmissions.toFixed(2)} kg CO2</h2>
-                                                                    <p>A temperatura atual em ${city} é de ${temperaturaTotal}°C.</p> 
+                                                                <p  id="resultadoo">A temperatura atual em <span id="temperature">${city}</span> é de <span id="temperature">${temperaturaTotal}°C</span>.</p>
                                                                     
                                                                     `;
 
 
         }
-        </script>
+    </script>
 </body>
 
 </html>
